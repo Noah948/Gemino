@@ -1,0 +1,168 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+
+/* Base Styles */
+.hero.is-fullheight {
+  min-height: 100vh;
+}
+
+/* Chat Container */
+.chat-container {
+  height: 400px;
+  overflow-y: auto;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #363636;
+}
+
+/* Scrollbar Styles */
+.chat-container {
+  scrollbar-width: thin;
+  scrollbar-color: #4a4a4a #363636;
+}
+
+.chat-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: #363636;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a;
+  border-radius: 20px;
+}
+
+/* Empty Chat State */
+.empty-chat {
+  text-align: center;
+  color: #b5b5b5;
+  padding: 3rem 0;
+}
+
+.empty-chat .icon {
+  margin-bottom: 1rem;
+}
+
+/* Message Styling */
+.message {
+  margin-bottom: 0.75rem;
+}
+
+/* Footer */
+.hero-foot {
+  padding-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .chat-container {
+    height: 50vh;
+    padding: 0.5rem;
+  }
+  
+  .message {
+    max-width: 85%;
+  }
+  
+  textarea {
+    font-size: 16px !important;
+  }
+}
+.code-block {
+  background-color: #1e1e1e;
+  color: #f8f8f2;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Optional smooth fade-in effect for code */
+.code-block {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Message alignment */
+.message-wrapper {
+  display: flex;
+  margin-bottom: 0.75rem;
+}
+
+.align-right {
+  justify-content: flex-end;
+}
+
+.align-left {
+  justify-content: flex-start;
+}
+
+.message {
+  max-width: 75%;
+}
+
+/* Code block */
+.code-block {
+  background-color: #1e1e1e;
+  color: #f8f8f2;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Responsive Typography with clamp() */
+
+.message-body p,
+.message-body code,
+.message-header,
+.code-block,
+.textarea,
+.title,
+.tag,
+.button span,
+.icon i {
+  font-size: clamp(13px, 1.5vw, 16px);
+  line-height: 1.5;
+}
+
+/* Optional: Adjust message box width for responsiveness */
+.message {
+  max-width: clamp(60%, 75%, 90%);
+}
+
+/* Optional: More breathing room on smaller screens */
+@media screen and (max-width: 600px) {
+  .chat-container {
+    padding: 0.75rem;
+  }
+
+  .message-wrapper {
+    margin-bottom: 0.5rem;
+  }
+}
+
