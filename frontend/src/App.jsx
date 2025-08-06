@@ -1,38 +1,60 @@
+// Import required hooks and libraries
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import './index.css';
+import './index.css'; // Custom CSS for styling
 
 function ChatBot() {
+  // State for prompt input
   const [prompt, setPrompt] = useState("");
+
+  // State for loading animation
   const [loading, setLoading] = useState(false);
+
+  // State to store all messages (user, bot, and error)
   const [messages, setMessages] = useState([]);
+
+  // Reference to scroll to the latest message
   const messagesEndRef = useRef(null);
 
+  // Automatically scroll to the bottom when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Function to send user prompt to the backend and update messages
   const sendPrompt = async () => {
     if (!prompt.trim()) {
+      // Display warning if prompt is empty
       setMessages(prev => [...prev, { type: "error", text: "⚠️ Please enter a prompt." }]);
       return;
     }
 
+    // Add user's message to chat history
     setMessages(prev => [...prev, { type: "user", text: prompt }]);
-    setPrompt("");
+    setPrompt(""); // Clear input box
 
     try {
-      setLoading(true);
+      setLoading(true); // Start loading
+
+      // Send prompt to backend (adjust URL if hosted online)
       const res = await axios.post("http://localhost:5000/generate", { prompt });
+
+      // Store bot's response or fallback message
       const botReply = res.data?.reply || "🤖 No reply received.";
       setMessages(prev => [...prev, { type: "bot", text: botReply }]);
+
     } catch (err) {
-      setMessages(prev => [...prev, { type: "error", text: "❌ Error: " + (err.response?.data?.error || err.message) }]);
+      // Handle errors gracefully
+      setMessages(prev => [...prev, {
+        type: "error",
+        text: "❌ Error: " + (err.response?.data?.error || err.message)
+      }]);
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading
     }
   };
 
+  // Handle Enter key press to send prompt (Shift+Enter allows newline)
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -45,7 +67,8 @@ function ChatBot() {
       <div className="hero-body">
         <div className="container">
           <div className="box has-background-grey-dark has-text-light">
-            {/* Header */}
+            
+            {/* Chat Header */}
             <div className="level">
               <div className="level-left">
                 <div className="level-item">
@@ -71,8 +94,9 @@ function ChatBot() {
               </div>
             </div>
 
-            {/* Chat Container */}
+            {/* Chat Messages Area */}
             <div className="chat-container">
+              {/* Show empty state when there are no messages */}
               {messages.length === 0 ? (
                 <div className="empty-chat">
                   <span className="icon is-large">
@@ -81,6 +105,7 @@ function ChatBot() {
                   <p>Start a conversation with Gemini AI</p>
                 </div>
               ) : (
+                // Render all messages (user, bot, error)
                 messages.map((msg, index) => (
                   <div
                     key={index}
@@ -97,16 +122,22 @@ function ChatBot() {
                           : "animate__shakeX"
                       } ${msg.type === "user" ? "is-primary" : msg.type === "bot" ? "is-info" : "is-danger"}`}
                     >
+                      {/* Header (User / Bot / Error) */}
                       <div className="message-header">
                         {msg.type === "user" ? "You" : msg.type === "bot" ? "Gemini AI" : "Error"}
                       </div>
+
+                      {/* Message Content */}
                       <div className="message-body">
+                        {/* Split code blocks (```code```) and text */}
                         {msg.text.split(/```([\s\S]*?)```/g).map((block, i) =>
                           i % 2 === 1 ? (
+                            // Code Block
                             <pre key={i} className="code-block">
                               <code>{block.trim()}</code>
                             </pre>
                           ) : (
+                            // Regular Text
                             block.split("\n").map((line, j) => <p key={`${i}-${j}`}>{line}</p>)
                           )
                         )}
@@ -118,7 +149,7 @@ function ChatBot() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Box */}
+            {/* Input Area */}
             <div className="field">
               <div className="control has-icons-right">
                 <textarea
@@ -130,6 +161,7 @@ function ChatBot() {
                   placeholder="Type your message here..."
                   disabled={loading}
                 />
+                {/* Right-side Icon (loading or send icon) */}
                 {loading ? (
                   <span className="icon is-small is-right">
                     <i className="fas fa-spinner fa-pulse"></i>
@@ -142,8 +174,9 @@ function ChatBot() {
               </div>
             </div>
 
-            {/* Buttons */}
+            {/* Control Buttons (Clear + Send) */}
             <div className="field is-grouped is-grouped-right">
+              {/* Clear Chat */}
               <div className="control">
                 <button
                   onClick={() => setMessages([])}
@@ -156,6 +189,8 @@ function ChatBot() {
                   <span>Clear Chat</span>
                 </button>
               </div>
+
+              {/* Send Message */}
               <div className="control">
                 <button
                   onClick={sendPrompt}
