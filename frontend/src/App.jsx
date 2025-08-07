@@ -102,7 +102,7 @@ function ChatBot() {
                   <span className="icon is-large">
                     <i className="fas fa-comments fa-2x"></i>
                   </span>
-                  <p>Start a conversation with Gemini AI</p>
+                  <p>Start a conversation with Gemino</p>
                 </div>
               ) : (
                 // Render all messages (user, bot, error)
@@ -249,7 +249,7 @@ function ChatBot() {
       {/* Footer */}
       <div className="hero-foot">
         <p className="has-text-grey-light">
-          <small>Powered by React & Bulma | Gemini AI Chat Interface</small>
+          <small>Powered by React & Bulma</small>
         </p>
       </div>
     </div>
