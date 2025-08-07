@@ -36,8 +36,9 @@ function ChatBot() {
     try {
       setLoading(true); // Start loading
 
-      // Send prompt to backend (adjust URL if hosted online)
-      const res = await axios.post("http://localhost:5000/generate", { prompt });
+      // ✅ Send prompt to backend using environment variable
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const res = await axios.post(`${apiUrl}/generate`, { prompt });
 
       // Store bot's response or fallback message
       const botReply = res.data?.reply || "🤖 No reply received.";
@@ -203,30 +204,29 @@ function ChatBot() {
             {/* Control Buttons (Clear + Send) */}
             <div className="field is-grouped is-grouped-right">
               {/* Clear Chat */}
-              {/* Clear Chat */}
-<div className="control">
-  <button
-    onClick={() => {
-      if (messages.length === 0 || loading) return;
-      document.querySelectorAll('.message').forEach((msg, i) => {
-        msg.style.setProperty('--random-x', Math.random() > 0.5 ? 1 : -1);
-        msg.style.animationDelay = `${i * 0.05}s`;
-      });
-      document.querySelector('.chat-container').classList.add('clearing-chat');
-      setTimeout(() => {
-        setMessages([]);
-        document.querySelector('.chat-container').classList.remove('clearing-chat');
-      }, 800);
-    }}
-    className="button is-light is-small clear-btn"
-    disabled={loading || messages.length === 0}
-  >
-    <span className="icon">
-      <i className="fas fa-trash"></i>
-    </span>
-    <span>Clear Chat</span>
-  </button>
-</div>
+              <div className="control">
+                <button
+                  onClick={() => {
+                    if (messages.length === 0 || loading) return;
+                    document.querySelectorAll('.message').forEach((msg, i) => {
+                      msg.style.setProperty('--random-x', Math.random() > 0.5 ? 1 : -1);
+                      msg.style.animationDelay = `${i * 0.05}s`;
+                    });
+                    document.querySelector('.chat-container').classList.add('clearing-chat');
+                    setTimeout(() => {
+                      setMessages([]);
+                      document.querySelector('.chat-container').classList.remove('clearing-chat');
+                    }, 800);
+                  }}
+                  className="button is-light is-small clear-btn"
+                  disabled={loading || messages.length === 0}
+                >
+                  <span className="icon">
+                    <i className="fas fa-trash"></i>
+                  </span>
+                  <span>Clear Chat</span>
+                </button>
+              </div>
 
               {/* Send Message */}
               <div className="control">
