@@ -146,6 +146,32 @@ function ChatBot() {
                   </div>
                 ))
               )}
+
+              {/* NEW RESPONSIVE THINKING ANIMATION - ONLY THIS SECTION CHANGED */}
+              {loading && (
+                <div className="message-wrapper align-left">
+                  <div className="message is-info animate__animated animate__fadeInLeft">
+                    <div className="message-header">
+                      Gemini AI
+                    </div>
+                    <div className="message-body thinking-message">
+                      <div className="responsive-thinking">
+                        <div className="pulse-dot"></div>
+                        <div className="thinking-text">Processing your request</div>
+                      </div>
+                      <div className="wave-animation">
+                        {[...Array(window.innerWidth < 768 ? 3 : 5)].map((_, i) => (
+                          <div 
+                            key={i} 
+                            className="wave-bar"
+                            style={{ animationDelay: `${i * 0.15}s` }}
+                          ></div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
 
@@ -177,18 +203,30 @@ function ChatBot() {
             {/* Control Buttons (Clear + Send) */}
             <div className="field is-grouped is-grouped-right">
               {/* Clear Chat */}
-              <div className="control">
-                <button
-                  onClick={() => setMessages([])}
-                  className="button is-light is-small"
-                  disabled={loading || messages.length === 0}
-                >
-                  <span className="icon">
-                    <i className="fas fa-trash"></i>
-                  </span>
-                  <span>Clear Chat</span>
-                </button>
-              </div>
+              {/* Clear Chat */}
+<div className="control">
+  <button
+    onClick={() => {
+      if (messages.length === 0 || loading) return;
+      document.querySelectorAll('.message').forEach((msg, i) => {
+        msg.style.setProperty('--random-x', Math.random() > 0.5 ? 1 : -1);
+        msg.style.animationDelay = `${i * 0.05}s`;
+      });
+      document.querySelector('.chat-container').classList.add('clearing-chat');
+      setTimeout(() => {
+        setMessages([]);
+        document.querySelector('.chat-container').classList.remove('clearing-chat');
+      }, 800);
+    }}
+    className="button is-light is-small clear-btn"
+    disabled={loading || messages.length === 0}
+  >
+    <span className="icon">
+      <i className="fas fa-trash"></i>
+    </span>
+    <span>Clear Chat</span>
+  </button>
+</div>
 
               {/* Send Message */}
               <div className="control">
