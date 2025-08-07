@@ -20,40 +20,46 @@ function ChatBot() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+const sendPrompt = async () => {
+  if (!prompt.trim()) {
+    // Display warning if prompt is empty
+    setMessages(prev => [...prev, { type: "error", text: "⚠️ Please enter a prompt." }]);
+    return;
+  }
 
-  // Function to send user prompt to the backend and update messages
-  const sendPrompt = async () => {
-    if (!prompt.trim()) {
-      // Display warning if prompt is empty
-      setMessages(prev => [...prev, { type: "error", text: "⚠️ Please enter a prompt." }]);
-      return;
-    }
+  // Add user's message to chat history
+  setMessages(prev => [...prev, { type: "user", text: prompt }]);
+  setPrompt(""); // Clear input box
 
-    // Add user's message to chat history
-    setMessages(prev => [...prev, { type: "user", text: prompt }]);
-    setPrompt(""); // Clear input box
+  try {
+    setLoading(true); // Start loading
 
-    try {
-      setLoading(true); // Start loading
+    // ✅ Send prompt to backend using environment variable
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const res = await axios.post(`${apiUrl}/generate`, { prompt });
 
-      // ✅ Send prompt to backend using environment variable
-      const apiUrl = import.meta.env.VITE_API_URL;
-      const res = await axios.post(`${apiUrl}/generate`, { prompt });
+    // Store bot's response or fallback message
+    const botReply = res.data?.reply || "🤖 No reply received.";
+    setMessages(prev => [...prev, { type: "bot", text: botReply }]);
 
-      // Store bot's response or fallback message
-      const botReply = res.data?.reply || "🤖 No reply received.";
-      setMessages(prev => [...prev, { type: "bot", text: botReply }]);
+  } catch (err) {
+    // ✅ Improved error handling to avoid [object Object]
+    const errorData = err.response?.data?.error;
+    const errorMessage =
+      typeof errorData === "string"
+        ? errorData
+        : typeof errorData === "object"
+        ? JSON.stringify(errorData)
+        : err.message || "Something went wrong.";
 
-    } catch (err) {
-      // Handle errors gracefully
-      setMessages(prev => [...prev, {
-        type: "error",
-        text: "❌ Error: " + (err.response?.data?.error || err.message)
-      }]);
-    } finally {
-      setLoading(false); // Stop loading
-    }
-  };
+    setMessages(prev => [...prev, {
+      type: "error",
+      text: "❌ Error: " + errorMessage,
+    }]);
+  } finally {
+    setLoading(false); // Stop loading
+  }
+};
 
   // Handle Enter key press to send prompt (Shift+Enter allows newline)
   const handleKeyPress = (e) => {
