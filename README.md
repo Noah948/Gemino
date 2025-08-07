@@ -1,28 +1,30 @@
 # 🤖 Gemino - AI Chatbot Using Google Gemini API
 
-Gemino is an AI chatbot powered by Google's Gemini API. This full-stack project consists of a React-based frontend and an Express backend that communicates with Gemini to generate intelligent responses based on user input.
+**Gemino** is a full-stack AI chatbot that utilizes Google's Gemini API to deliver intelligent, real-time responses. The project combines a sleek React frontend with a robust Express backend, delivering a seamless AI chat experience.
+
+🌐 [Live Demo](https://gemino-swart.vercel.app/)
 
 ---
 
 ## 🧠 Features
 
-- Uses Google Gemini 2.5 Flash model for AI-generated responses  
-- Real-time chat UI with auto-scroll and response animations  
-- Modern UI with **Bulma CSS** for styling  
-- Syntax highlighting with **PrismJS**  
-- Axios for HTTP requests  
-- Secure API key usage with `.env`
+- ⚡ Powered by **Google Gemini 2.5 Flash Model**
+- 💬 Real-time AI chat interface
+- 🎨 Modern design using **Bulma CSS**
+- 🌈 Syntax highlighting via **PrismJS**
+- 🔒 Secure API key management with `.env`
+- 📦 Axios for HTTP communication
+- 🔁 Auto-scroll and animated responses
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Frontend  | Backend   | API               |
-|-----------|-----------|------------------|
-| React     | ExpressJS | Google Gemini API |
-| Vite      | CORS      |                  |
-| Bulma CSS | dotenv    |                  |
-| PrismJS   |           |                  |
-| Axios     |           |                  |
+| Frontend           | Backend         | External API         |
+|--------------------|------------------|----------------------|
+| React + Vite       | Node + Express   | Google Gemini API    |
+| Bulma CSS          | dotenv           |                      |
+| Axios              | CORS             |                      |
+| PrismJS            |                  |                      |
 
 ---
